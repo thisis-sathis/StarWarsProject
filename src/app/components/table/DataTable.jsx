@@ -12,25 +12,20 @@ import {
   flexRender
 } from "@tanstack/react-table";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  table: any; 
-  onTableDataClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined, rowData: any) => void;
 
-}
 
-const DataTable = <TData, TValue>({
+const DataTable = ({
   columns,
   table,
   onTableDataClick,
-}: DataTableProps<TData, TValue>) => {
+}) => {
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map((headerGroup: any) => (
+          {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header: any) => (
+              {headerGroup.headers.map((header) => (
                 <TableHead key={header.id}>
                   {header.isPlaceholder
                     ? null
@@ -42,14 +37,14 @@ const DataTable = <TData, TValue>({
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row: any) => (
+            table.getRowModel().rows.map((row) => (
                 <TableRow
                 key={row.id}
                 className='cursor-pointer'
                 onClick={(event) => onTableDataClick(event, row.original)}
                 data-state={row.getIsSelected() && "selected"}
               >
-                {row.getVisibleCells().map((cell: any) => (
+                {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
