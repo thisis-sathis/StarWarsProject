@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import "./PeopleTable.scss";
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchFilmsData } from '../../../redux/reducers/filmSlice';
+import { fetchPeopleData } from '../../../redux/reducers/peopleSlice';
 
 import {
   ColumnDef,
@@ -48,9 +49,22 @@ export function PeopleTable<TData, TValue>({ data }: DataTableProps<TData, TValu
       films: any[];
     };
   };
-
+  type RootPeopleState = {
+    peopleReducer: {
+      loading: boolean;
+      errorStatus: boolean;
+      errorMessage: string;
+      data: any[];
+      pagination:any;
+      searchQuery:string;
+      totalCount: number;
+    };
+  };
+ 
   const { loading, errorStatus, errorMessage, films } = useSelector((state: RootState) => state.filmReducer);
-
+  const { pagination, searchQuery, totalCount } = useSelector(
+    (state: RootPeopleState) => state.peopleReducer
+  );
   const columns: ColumnDef<any>[] = [
     { accessorKey: 'name', header: 'Name' ,  enableSorting: false},
     { accessorKey: 'height', header: 'Height' },
@@ -111,6 +125,7 @@ export function PeopleTable<TData, TValue>({ data }: DataTableProps<TData, TValu
       }
       else{
         if (event) {
+          event.preventDefault();
           event.stopPropagation();
         }
       }
@@ -119,6 +134,9 @@ export function PeopleTable<TData, TValue>({ data }: DataTableProps<TData, TValu
     }
   }
 
+  const fetchOnpageChange = (page: string) => {
+    dispatch(fetchPeopleData(page) as unknown as any);
+  }
   return (
     <div className="flex flex-col gap-4 people-data-table">
       <Input
@@ -130,7 +148,7 @@ export function PeopleTable<TData, TValue>({ data }: DataTableProps<TData, TValu
         className="max-w-sm outline-none"
       />
       <DataTable columns={columns} table={table} onTableDataClick={onTableDataClick} />
-      <PaginationControls table={table} />  
+      <PaginationControls totalCount={totalCount} pagination={pagination} pageChange={fetchOnpageChange} table={table} />  
       <Sheet>
         <SheetTrigger asChild ref={sheetTriggerRef}>
           <Button variant="secondary" className='hidden'></Button>
