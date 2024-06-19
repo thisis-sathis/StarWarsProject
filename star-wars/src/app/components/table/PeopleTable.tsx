@@ -34,9 +34,7 @@ interface DataTableProps<TData, TValue> {
 }
 
 
-export function PeopleTable<TData, TValue>({
-  data,
-}: DataTableProps<TData, TValue>) {
+export function PeopleTable<TData, TValue>({ data }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [selectedRow, setSelectedRow] = useState<any>(null);
@@ -131,7 +129,6 @@ export function PeopleTable<TData, TValue>({
         }
         className="max-w-sm outline-none"
       />
-      
       <DataTable columns={columns} table={table} onTableDataClick={onTableDataClick} />
       <PaginationControls table={table} />  
       <Sheet>
@@ -163,7 +160,6 @@ export function PeopleTable<TData, TValue>({
                   }))}
                 />
                 </div>
-                
               )
             }
           </div>
