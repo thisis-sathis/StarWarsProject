@@ -54,7 +54,6 @@ export const peopleSlice = createSlice({
 });
 
 export const { reducer: peopleReducer } = peopleSlice; 
-
 export default peopleSlice.reducer;
 
 

@@ -33,7 +33,6 @@ export function ErrorCard({ message }: { message: string }) {
           </clipPath>
           </defs>
           </svg>
-
         <p className="text-center text-red-500 pt-10">{message}</p>
       </CardContent>
     </Card>
