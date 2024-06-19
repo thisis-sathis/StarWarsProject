@@ -55,7 +55,7 @@ export function PeopleTable({ data }) {
         return (
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="secondary">View more</Button>
+              <Button variant="secondary" style={{color: "#0074de", textDecoration: "underline"}}>View more</Button>
             </SheetTrigger>
             <SheetContent className="w-[400px] sm:w-[540px]">
               <SheetHeader>

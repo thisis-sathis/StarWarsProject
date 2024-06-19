@@ -5,6 +5,9 @@
     .ring-offset-background {
         background-color: transparent;
     }
+    .text-secondary-foreground{
+        --tw-ring-offset-color: hsl(var(--background));
+    }
 }
 
 .character-films{
