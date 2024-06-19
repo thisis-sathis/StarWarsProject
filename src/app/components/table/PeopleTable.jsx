@@ -24,48 +24,25 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import AttributesViewer from '../../components/viewer/AttributesViewer';
+import AttributesViewer from '../viewer/AttributesViewer';
 import DataTable from './DataTable';
 import PaginationControls from '../pagination/PaginationControls';
 import CardListLoader from '../loader/CardLoader';
 
 
-interface DataTableProps<TData, TValue> {
-  data: TData[]
-}
 
-
-export function PeopleTable<TData, TValue>({ data }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [selectedRow, setSelectedRow] = useState<any>(null);
-  const sheetTriggerRef = useRef<HTMLButtonElement>(null); 
+export function PeopleTable({ data }) {
+  const [sorting, setSorting] = useState([])
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const sheetTriggerRef = useRef(null); 
   const dispatch = useDispatch();
-  type RootState = {
-    filmReducer: {
-      loading: boolean;
-      errorStatus: boolean;
-      errorMessage: string;
-      films: any[];
-    };
-  };
-  type RootPeopleState = {
-    peopleReducer: {
-      loading: boolean;
-      errorStatus: boolean;
-      errorMessage: string;
-      data: any[];
-      pagination:any;
-      searchQuery:string;
-      totalCount: number;
-    };
-  };
- 
-  const { loading, errorStatus, errorMessage, films } = useSelector((state: RootState) => state.filmReducer);
+
+  const { loading, errorStatus, errorMessage, films } = useSelector((state) => state.filmReducer);
   const { pagination, searchQuery, totalCount } = useSelector(
-    (state: RootPeopleState) => state.peopleReducer
+    (state) => state.peopleReducer
   );
-  const columns: ColumnDef<any>[] = [
+  const columns = [
     { accessorKey: 'name', header: 'Name' ,  enableSorting: false},
     { accessorKey: 'height', header: 'Height' },
     { accessorKey: 'mass', header: 'Mass' },
@@ -91,7 +68,7 @@ export function PeopleTable<TData, TValue>({ data }: DataTableProps<TData, TValu
               <div className="grid gap-4 py-4 min-w-[30rem]">
                 <AttributesViewer inputAttributes={Object.entries(row.original).map(([key, value]) => ({
                   key,
-                  value: value as string | string[] | Record<string, any>
+                  value: value
                 }))} />
               </div>
             </SheetContent>
@@ -114,11 +91,11 @@ export function PeopleTable<TData, TValue>({ data }: DataTableProps<TData, TValu
   });
 
 
-  const onTableDataClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined, rowData:any) => {
+  const onTableDataClick = (event,  rowData) => {
     if (rowData && rowData.films) {
       setSelectedRow(rowData);
-      if (!((event?.target as HTMLElement)?.innerHTML?.includes("View more"))) {
-        dispatch(fetchFilmsData(rowData["films"]) as unknown as any);
+      if (!((event?.target)?.innerHTML?.includes("View more"))) {
+        dispatch(fetchFilmsData(rowData["films"]));
         if (sheetTriggerRef.current) {
           sheetTriggerRef.current.click();
         }
@@ -134,14 +111,15 @@ export function PeopleTable<TData, TValue>({ data }: DataTableProps<TData, TValu
     }
   }
 
-  const fetchOnpageChange = (page: string) => {
-    dispatch(fetchPeopleData(page) as unknown as any);
+  const fetchOnpageChange = (url) => {
+    dispatch(fetchPeopleData(url));
   }
+  
   return (
     <div className="flex flex-col gap-4 people-data-table">
       <Input
         placeholder="Search character names..."
-        value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+        value={(table.getColumn("name")?.getFilterValue()) ?? ""}
         onChange={(event) =>
           table.getColumn("name")?.setFilterValue(event.target.value)
         }
@@ -174,7 +152,7 @@ export function PeopleTable<TData, TValue>({ data }: DataTableProps<TData, TValu
                   <AttributesViewer 
                   inputAttributes={Object.entries(films).map(([key, value]) => ({
                     key,
-                    value: value as string | string[] | Record<string, any>
+                    value: value
                   }))}
                 />
                 </div>
