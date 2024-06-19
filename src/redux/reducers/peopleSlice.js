@@ -1,21 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface Person {
-  name: string;
-  // Add other relevant fields as needed
-}
 
-interface PeopleState {
-  data: Person[];
-  loading: boolean;
-  errorStatus: boolean;
-  errorMessage: string;
-  pagination: any;
-  searchQuery: string;
-  totalCount: number;
-}
 
-const initialState: PeopleState = {
+
+const initialState = {
   data: [],
   loading: false,
   errorStatus: false,
@@ -29,7 +17,7 @@ const initialState: PeopleState = {
 };
 
 
-export const fetchPeopleData = createAsyncThunk<Person[], string | undefined>(
+export const fetchPeopleData = createAsyncThunk(
   'people/fetchData',
   async (url = 'https://swapi.dev/api/people/?page=1') => {
     const response = await fetch(url);
@@ -57,7 +45,7 @@ export const peopleSlice = createSlice({
           nextPage: null,
         }
       })
-      .addCase(fetchPeopleData.fulfilled, (state, action: PayloadAction<Person[]>) => {
+      .addCase(fetchPeopleData.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload?.results;
         state.totalCount = action.payload?.count;
