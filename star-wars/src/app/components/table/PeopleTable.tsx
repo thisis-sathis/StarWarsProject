@@ -121,7 +121,6 @@ export function PeopleTable<TData, TValue>({
     }
   }
 
-  console.log("Films", films);
   return (
     <div className="flex flex-col gap-4 people-data-table">
       <Input
